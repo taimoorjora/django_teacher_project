@@ -6,7 +6,7 @@ from zipfile import ZipFile
 from django.core.files.base import File
 from django.contrib.auth.decorators import login_required
 
-from .models import Teacher, Subject, TeacherSubject
+from teacher.models import Teacher, Subject, TeacherSubject
 
 
 def teacher_list(request):

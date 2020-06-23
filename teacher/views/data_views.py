@@ -6,7 +6,7 @@ from zipfile import ZipFile
 from django.core.files.base import File
 from django.contrib.auth.decorators import login_required
 
-from .models import Teacher, Subject, TeacherSubject
+from teacher.models import Teacher, Subject, TeacherSubject
 
 @login_required(login_url='/accounts/login/')
 def data_upload(request):
@@ -14,16 +14,17 @@ def data_upload(request):
         return render(request, 'teacher/data_upload.html',{})
 
     data_file = request.FILES['file']
+    images_zip = request.FILES['images']
 
-    if not data_file.name.endswith('.csv'):
+    if not data_file.name.endswith('.csv') and not images_zip.name.endswith('.zip'):
         messages.error(request, 'This is not a csv file')
+        return render(request, 'teacher/data_upload.html',{})
 
     data_set = data_file.read().decode('UTF-8')
     io_string = io.StringIO(data_set)
     next(io_string)
 
 
-    images_zip = request.FILES['images']
     zipped_files = ZipFile(images_zip)
     image_names = zipped_files.namelist()
 
@@ -59,7 +60,7 @@ def data_upload(request):
                 
                 subject = subject.strip().lower()
                 subject_object, created = Subject.objects.update_or_create(title=subject)
-                TeacherSubject.objects.create(teacher=teacher, subject=subject_object)
+                TeacherSubject.objects.update_or_create(teacher=teacher, subject=subject_object)
                 subjects_taught_count +=1
     
     messages.success(request, 'Data has been uploaded')
