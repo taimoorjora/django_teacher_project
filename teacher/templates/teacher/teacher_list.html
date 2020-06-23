@@ -1,0 +1,47 @@
+{% extends 'teacher/base.html' %}
+{% block title %}Home{% endblock %}
+{% load static %}
+
+{% block body %}
+
+<h3>Search</h3>
+<form method="GET" class="form-inline">
+    <div class="form-group mb-2">
+        <label for="fletter" class="sr-only">By Last Name</label>
+        <input  id="fletter" type="text" class="form-control" name="fletter"  maxlength="1" placeholder="first letter of lastname" >
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="subject" class="sr-only">By Subject</label>
+        <select name="subject" id="subject">
+            <option value="" >Any</option>
+            {% for subject in subjects %}
+            <option value="{{subject.id}}">{{subject.title}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button id="search_submit" class="btn btn-primary mb-2" type="submit" >Submit</button>
+</form>
+<hr>
+
+<div class="row">
+    {% for teacher in teachers %}
+        <div class="col-md-12">
+            <div class=" p-2">
+                <a href="{% url 'teacher:teacherdetail' teacher.id %}">{{teacher.first_name | title}} {{teacher.last_name | title}}</a>
+            </div>
+        </div>
+    {% empty %}
+    <p>No data available</p>
+    {% endfor %}
+</div>
+
+
+<script>
+function limitText(limitField, limitNum) {
+    if (limitField.value.length > limitNum) {
+        limitField.value = limitField.value.substring(0, limitNum);
+    } 
+}
+</script>
+
+{% endblock %}

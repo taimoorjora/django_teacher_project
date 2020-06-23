@@ -1,0 +1,28 @@
+{% extends 'teacher/base.html' %}
+{% block title %}Data Uploader{% endblock %}
+{% load static %}
+
+{% block body %}
+
+
+<h3>Upload Data</h3>
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="csv_file" >Attach CSV file here</label><br>
+                <input type="file" id="csv_file" name="file">
+            </div>
+            <div class="form-group"> 
+                <label for="zip_file">Attach image zip file here</label><br>
+                <input type="file" id="zip_file" name="images">
+            </div>
+                <button id="data_submit" class="btn btn-primary" type="submit" >Submit</button>
+        </form>
+        
+    </div>
+</div>
+
+
+{% endblock %}
